@@ -98,14 +98,49 @@ const yoda = (function () {
     return this.elements[0].textContent;
   };
 
-  Yoda.prototype.
+  Yoda.prototype.ajax = function (url, options) {
+    if (!url || typeof url !== "string") return;
+    const fetchData = {};
+    fetch(url)
+      .then((response) => response.json())
+      .then(function (data) {
+        // console.log(data);
+        let userId = data.userId;
+        fetchData.id = userId;
+      });
+    return fetchData;
+  };
+
+  Yoda.prototype.on = function (event, callback) {
+    console.log(this.elements[0].addEventListener(event, callback));
+    return this;
+  };
+  Yoda.prototype.off = function (event, callback) {
+    this.elements[0].removeEventListener(event, callback);
+    return callback;
+  };
 
   return (selector) => {
     return new Yoda(selector);
   };
 })();
 
-yoda("#last").after("p");
-yoda("#last").prepend("p");
-yoda("#last").append("p");
-console.log(yoda("p").val());
+// yoda("#last").after("p");
+// yoda("#last").prepend("p");
+// yoda("#last").append("p");
+// console.log(yoda("p").val());
+// const a = yoda().ajax("https://jsonplaceholder.typicode.com/posts/1");
+// console.log(a);
+// yoda().ajax("https://jsonplaceholder.typicode.com/posts/1");
+
+const al = () => {
+  yoda("#title").css("font-size", "5em");
+};
+
+const a = () => {
+  yoda("#title").css("color", "gray");
+};
+
+document.querySelector("#title").addEventListener("click", function () {
+  this.classList.toggle("big");
+});
